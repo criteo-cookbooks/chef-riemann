@@ -1,0 +1,38 @@
+; vim: filetype=clojure
+
+; Boundary's Riemann config.
+
+(logging/init :file "/var/log/riemann/riemann.log")
+
+(tcp-server :host "0.0.0.0" :port 5555)
+(udp-server :host "0.0.0.0" :port 5555)
+(ws-server :host "0.0.0.0" :port 5556)
+
+; (def email (mailer {:from ""
+;                     :host ""
+;                     :user ""
+;                     :pass ""}))
+
+; Expire old events from the index every 5 seconds.
+(periodically-expire 5)
+
+; Keep events in the index for 5 minutes by default.
+(let [index (default :ttl 60 (update-index (index)))]
+
+  ; Inbound events will be passed to these streams:
+  (streams
+	; (where (or (state "ok") (service "ok"))
+; 		index
+; 			(else
+; 				(email "mailme")))
+
+index
+
+    ; Calculate an overall rate of events.
+    ;(with {:metric 1 :host nil :state "ok" :service "events/sec"}
+     ;(rate 5 index))
+
+    ; Log expired events.
+    (expired
+      (fn [event] (info "expired" event)))
+))
