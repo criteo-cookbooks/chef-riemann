@@ -13,7 +13,6 @@ runit_service "riemann-dash"
 service "riemann-dash" do
   supports :restart => true
   supports :start => true
-  action [ :restart ]
 end
 
 remote_directory "/opt/riemann-dash" do
@@ -22,6 +21,5 @@ remote_directory "/opt/riemann-dash" do
   group "riemann-dash"
   files_owner "riemann-dash"
   files_group "riemann-dash"
-
   notifies :restart, resources(:service => 'riemann-dash')
 end
