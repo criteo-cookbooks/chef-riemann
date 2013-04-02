@@ -4,7 +4,12 @@ user "riemann-dash" do
   system true
 end
 
-gem_package "riemann-dash" do
+directory "/home/riemann-dash" do
+  user "riemann-dash"
+end
+
+rbenv_gem "riemann-dash" do
+  ruby_version node[:riemann][:ruby_version]
   action :install
 end
 
@@ -21,5 +26,5 @@ remote_directory "/opt/riemann-dash" do
   group "riemann-dash"
   files_owner "riemann-dash"
   files_group "riemann-dash"
-  notifies :restart, resources(:service => 'riemann-dash')
+  notifies :start, resources(:service => 'riemann-dash')
 end

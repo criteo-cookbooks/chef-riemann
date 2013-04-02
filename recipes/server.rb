@@ -40,3 +40,5 @@ directory "/usr/lib/riemann" do
   group 'riemann'
   action :create
 end
+
+node.set[:riemann][:server][:service] = true

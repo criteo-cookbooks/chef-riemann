@@ -4,4 +4,7 @@ exec 2>&1
 ulimit -n 4096
 ulimit -a
 
-exec chpst -u riemann-dash /opt/chef/embedded/bin/riemann-dash /opt/riemann-dash/config.rb
+export HOME=/home/riemann-dash
+export RBENV_VERSION=<%= node[:riemann][:ruby_version] %>
+cd $HOME
+exec chpst -u riemann-dash /opt/rbenv/shims/riemann-dash /opt/riemann-dash/config.rb
