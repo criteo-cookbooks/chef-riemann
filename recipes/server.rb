@@ -1,3 +1,5 @@
+include_recipe "java"
+
 user "riemann" do
   home "/home/riemann"
   shell "/bin/bash"
