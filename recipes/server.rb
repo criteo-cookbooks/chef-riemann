@@ -44,3 +44,4 @@ directory "/usr/lib/riemann" do
 end
 
 node.set[:riemann][:server][:service] = true
+node.set[:riemann][:server][:bind_ip] = node[:ipaddress] unless node[:riemann][:server][:bind_ip]
