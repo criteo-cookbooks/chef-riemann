@@ -20,6 +20,9 @@ service "riemann" do
   action [:start]
 end
 
+node.set[:riemann][:server][:service] = true
+node.set[:riemann][:server][:bind_ip] = node[:ipaddress] unless node[:riemann][:server][:bind_ip]
+
 template "/etc/riemann/riemann.config" do
   source "riemann.config.erb"
   owner "root"
@@ -27,6 +30,7 @@ template "/etc/riemann/riemann.config" do
   mode 0644
 
   notifies :restart, resources(:service => 'riemann')
+  variables :bind_ip => node[:riemann][:server][:bind_ip]
 end
 
 directory "/var/log/riemann/" do
@@ -42,6 +46,3 @@ directory "/usr/lib/riemann" do
   group 'riemann'
   action :create
 end
-
-node.set[:riemann][:server][:service] = true
-node.set[:riemann][:server][:bind_ip] = node[:ipaddress] unless node[:riemann][:server][:bind_ip]
