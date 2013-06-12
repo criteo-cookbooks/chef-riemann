@@ -1,3 +1,2 @@
-default["riemann_server"]["version"] = '0.1.5'
-default.set['java']['oracle']['accept_oracle_download_terms'] = true
-
+default[:riemann][:server][:version] = '0.2.2'
+default[:riemann][:ruby_version] = "1.9.3-p286"

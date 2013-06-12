@@ -9,3 +9,4 @@ recipe "riemann-server", "Installs and configures the riemann-server and riemann
 
 depends "runit"
 depends "java"
+depends "rbenv", "1.4.2" #riotgames
