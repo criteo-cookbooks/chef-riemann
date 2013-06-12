@@ -1,3 +1,4 @@
+include_recipe "riemann-server::default"
 include_recipe "java"
 
 user "riemann" do
@@ -6,12 +7,27 @@ user "riemann" do
   system true
 end
 
-remote_file "/tmp/riemann_#{node.riemann_server.version}_all.deb" do
-  source "http://aphyr.com/riemann/riemann_#{node.riemann_server.version}_all.deb"
-  mode 0644
-end
+if platform_family?("debian")
 
-dpkg_package "/tmp/riemann_#{node.riemann_server.version}_all.deb"
+  remote_file "/tmp/riemann_#{node[:riemann][:server][:version]}_all.deb" do
+    source "http://aphyr.com/riemann/riemann_#{node[:riemann][:server][:version]}_all.deb"
+    mode 0644
+  end
+
+  dpkg_package "/tmp/riemann_#{node[:riemann][:server][:version]}_all.deb"
+
+elsif platform?("redhat", "centos", "fedora", "amazon", "scientific")
+
+  include_recipe "yum::epel"
+  
+  remote_file "/tmp/riemann-#{node[:riemann][:server][:version]}-1.noarch.rpm" do
+    source "http://aphyr.com/riemann/riemann-#{node[:riemann][:server][:version]}-1.noarch.rpm"
+    mode 0644
+  end
+
+  yum_package "/tmp/riemann-#{node[:riemann][:server][:version]}-1.noarch.rpm"
+
+end
 
 runit_service "riemann"
 

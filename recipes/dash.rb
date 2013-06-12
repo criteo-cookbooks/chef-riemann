@@ -1,3 +1,5 @@
+include_recipe "riemann-server::default"
+
 user "riemann-dash" do
   home "/home/riemann-dash"
   shell "/bin/bash"
