@@ -28,5 +28,5 @@ remote_directory "/opt/riemann-dash" do
   group "riemann-dash"
   files_owner "riemann-dash"
   files_group "riemann-dash"
-  notifies :start, resources(:service => 'riemann-dash')
+  notifies :restart, 'service[riemann-dash]'
 end
