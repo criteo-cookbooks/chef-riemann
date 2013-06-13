@@ -1,12 +1,29 @@
 name              "riemann-server"
-maintainer        "Cloudbau GmbH"
-maintainer_email  "fillme"
-license           "fillme"
-description       "installs riemann_server"
+maintainer        "cloudbau GmbH"
+maintainer_email  "h.volkmer@cloudbau.de"
+license           "Apache v2.0"
+description       "Installs a Riemann server with optional dashboard"
 version           "1.0.0"
 
-recipe "riemann-server", "Installs and configures the riemann-server and riemann-dash"
+supports "Centos", ">= 6.4"
+supports "Ubuntu"
 
 depends "runit"
 depends "java"
 depends "rbenv", "1.4.2" #riotgames
+
+recipe "riemann-server::default", "Installs a Riemann server includng the dashboard"
+recipe "riemann-server::server", "Installs and configures only the Riemann server"
+recipe "riemann-server::dash", "Installs and configures only the Riemann dashboard"
+
+attribute 'riemann/server/version',
+  :display_name => 'Riemann server version',
+  :type => 'string',
+  :default => '0.2.2',
+  :recipes => [ 'riemann-server::server' ]
+
+attribute 'riemann/ruby_version',
+  :display_name => 'Ruby version for Riemann dashboard',
+  :type => 'string',
+  :default => '1.9.3-p286',
+  :recipes => [ 'riemann-server::dash' ]
