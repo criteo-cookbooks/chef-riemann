@@ -12,9 +12,9 @@ depends "runit"
 depends "java"
 depends "rbenv", "1.4.2" #riotgames
 
-recipe "riemann-server::default", "Installs a Riemann server includng the dashboard"
-recipe "riemann-server::server", "Installs and configures only the Riemann server"
-recipe "riemann-server::dash", "Installs and configures only the Riemann dashboard"
+recipe "riemann-server::default", "Installs a Riemann server including the dashboard"
+recipe "riemann-server::server", "Installs the Riemann server only"
+recipe "riemann-server::dash", "Installs the Riemann dashboard only"
 
 attribute 'riemann/server/version',
   :display_name => 'Riemann server version',
