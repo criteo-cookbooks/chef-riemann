@@ -18,4 +18,4 @@
 # 
 
 include_recipe 'riemann-server::server'
-include_recipe 'riemann-server::dashboard'
+include_recipe 'riemann-server::dash'
