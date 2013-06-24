@@ -26,7 +26,7 @@ It supports RPM- and DEB-based installation and makes use of the packages provid
 
 * riemann-server::default - Installs a Riemann server including the dashboard
 * riemann-server::server - Installs the Riemann server only
-* riemann-server::dash - Installs the Riemann dashboard only
+* riemann-server::dashboard - Installs the Riemann dashboard only
 
 # License and Maintainer
 
