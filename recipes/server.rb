@@ -41,7 +41,7 @@ if platform_family?("debian")
   end
 
 elsif platform?("redhat", "centos", "fedora", "amazon", "scientific")
-  include_recipe "yum::epel"
+  include_recipe "yum-epel"
   remote_file "/tmp/riemann-#{node[:riemann][:server][:version]}-1.noarch.rpm" do
     source "http://aphyr.com/riemann/riemann-#{node[:riemann][:server][:version]}-1.noarch.rpm"
     mode 0644
