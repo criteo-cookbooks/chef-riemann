@@ -7,15 +7,15 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# 
+#
 
 include_recipe 'runit'
 include_recipe 'java'
@@ -41,16 +41,12 @@ if platform_family?("debian")
   end
 
 elsif platform?("redhat", "centos", "fedora", "amazon", "scientific")
-
   include_recipe "yum::epel"
-  
   remote_file "/tmp/riemann-#{node[:riemann][:server][:version]}-1.noarch.rpm" do
     source "http://aphyr.com/riemann/riemann-#{node[:riemann][:server][:version]}-1.noarch.rpm"
     mode 0644
   end
-
   yum_package "/tmp/riemann-#{node[:riemann][:server][:version]}-1.noarch.rpm"
-
 end
 
 runit_service "riemann"
