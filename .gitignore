@@ -15,4 +15,5 @@ bin/*
 .bundle/*
 
 #OSX Files
-*.DS_Store*
+*.DS_Store*.kitchen/
+.kitchen.local.yml
