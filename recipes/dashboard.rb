@@ -1,8 +1,9 @@
 #
-# Cookbook Name:: riemann-server
-# Recipe:: dash
+# Cookbook Name:: riemann
+# Recipe:: dashboard
 #
 # Copyright (C) 2013 cloudbau GmbH
+# Copyright (C) 2014 Criteo
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,39 +18,57 @@
 # limitations under the License.
 #
 
-include_recipe 'runit'
-include_recipe 'rbenv::default'
-include_recipe 'rbenv::ruby_build'
-
-rbenv_ruby node[:riemann][:ruby_version]
-
-user "riemann-dash" do
-  home "/home/riemann-dash"
+user node['riemann']['dashboard']['user'] do
+  home node['riemann']['dashboard']['home']
   shell "/bin/bash"
   system true
 end
 
-directory "/home/riemann-dash" do
-  user "riemann-dash"
+directory node['riemann']['dashboard']['home'] do
+  user node['riemann']['dashboard']['user']
 end
 
-rbenv_gem "riemann-dash" do
-  ruby_version node[:riemann][:ruby_version]
+[ 'ruby', 'ruby-devel', 'rubygems' ].each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+gem_package 'bundler' do
   action :install
 end
 
-runit_service "riemann-dash"
+cookbook_file "#{node['riemann']['dashboard']['home']}/Gemfile" do
+  source "dashboard/Gemfile"
+  mode "0755"
+end
+
+template "/etc/init.d/riemann-dash" do
+  source "dashboard/riemann-dash.erb"
+  owner "root"
+  group "root"
+  mode "0711"
+end
+
+execute 'bundle install --path vendor/bundle' do
+  cwd node['riemann']['dashboard']['home']
+  user node['riemann']['dashboard']['user']
+  not_if 'bundle check'
+end
+
+template "#{node['riemann']['dashboard']['home']}/config.yml" do
+  source "dashboard/config.yml.erb"
+  owner node['riemann']['dashboard']['user']
+  mode '0644'
+end
+
+template "#{node['riemann']['dashboard']['home']}/config.ru" do
+  source "dashboard/config.ru.erb"
+  owner node['riemann']['dashboard']['user']
+end
 
 service "riemann-dash" do
-  supports :restart => true
-  supports :start => true
+  supports :restart => true, :start => true, :stop => true, :reload => false
+  action [:enable, :start]
 end
 
-remote_directory "/opt/riemann-dash" do
-  source "riemann-dash"
-  owner "riemann-dash"
-  group "riemann-dash"
-  files_owner "riemann-dash"
-  files_group "riemann-dash"
-  notifies :restart, 'service[riemann-dash]'
-end

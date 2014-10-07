@@ -1,29 +1,67 @@
-name              "riemann-server"
-maintainer        "cloudbau GmbH"
-maintainer_email  "h.volkmer@cloudbau.de"
+name              "riemann"
+maintainer        "criteo"
+maintainer_email  "f.visconte@criteo.com"
 license           "Apache v2.0"
-description       "Installs a Riemann server with optional dashboard"
+description       "Installs a Riemann server or dashboard"
 version           "1.1.0"
 
 supports "Centos", ">= 6.4"
-supports "Ubuntu"
 
-depends "runit"
 depends "java"
-depends "rbenv", ">= 1.4.2" #riotgames
+depends "yum-epel"
 
-recipe "riemann-server::default", "Installs a Riemann server including the dashboard"
-recipe "riemann-server::server", "Installs the Riemann server only"
-recipe "riemann-server::dashboard", "Installs the Riemann dashboard only"
+recipe "riemann::server", "Riemann server"
+recipe "riemann::dashboard", "Riemann dashboard"
+
 
 attribute 'riemann/server/version',
-  :display_name => 'Riemann server version',
-  :type => 'string',
-  :default => '0.2.2',
-  :recipes => [ 'riemann-server::server' ]
+  :display_name => "Server version",
+  :description => "Riemann server version to install",
+  :type => "string",
+  :default => "0.2.6"
 
-attribute 'riemann/ruby_version',
-  :display_name => 'Ruby version for Riemann dashboard',
+attribute 'riemann/server/user',
+  :display_name => 'Riemann system user',
+  :description => 'Name of the riemann server system user',
   :type => 'string',
-  :default => '1.9.3-p286',
-  :recipes => [ 'riemann-server::dash' ]
+  :default => 'riemann'
+
+attribute 'riemann/server/home',
+  :display_name => 'Riemann server home',
+  :description => 'Home directory for the riemann server user',
+  :type => 'string',
+  :default => '/var/lib/riemann'
+
+attribute 'riemann/server/config_directory',
+  :display_name => 'Riemann config directory',
+  :description => 'Where to put riemann.config. Should not be modified but can be useful for external cookbook to put a custom riemann.config',
+  :type => 'string',
+  :default => '/etc/riemann'
+
+attribute 'riemann/server/bind_ip',
+  :display_name => 'Riemann server bind address',
+  :description => 'The IP address to bind riemann server on',
+  :type => 'string',
+  :default => '0.0.0.0'
+
+attribute 'riemann/dashboard/port',
+  :display_name => 'Riemann dashboard TCP port',
+  :type => 'string',
+  :default => '4567'
+
+attribute 'riemann/dashboard/bind_ip',
+  :display_name => 'Riemann dashboard bind address',
+  :type => 'string',
+  :default => '0.0.0.0'
+
+attribute 'riemann/dashboard/user',
+  :display_name => 'Riemann dashboard user',
+  :description => 'Riemann dashboard system user name',
+  :type => 'string',
+  :default => 'riemann-dash'
+
+attribute 'riemann/dashboard/home',
+  :display_name => 'Riemann dash install dir',
+  :description => 'The place where the riemann-dash bundle and configuration will be installed.',
+  :type => 'string',
+  :default => '/var/lib/riemann-dash'

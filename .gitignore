@@ -11,6 +11,8 @@ Berksfile.lock
 
 # Bundler
 Gemfile.lock
+vendor/
+.kitchen
 bin/*
 .bundle/*
 
