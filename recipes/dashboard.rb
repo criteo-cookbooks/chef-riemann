@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe 'build-essential::default'
+
 user node['riemann']['dashboard']['user'] do
   home node['riemann']['dashboard']['home']
   shell "/bin/bash"

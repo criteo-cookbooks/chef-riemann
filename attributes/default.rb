@@ -1,4 +1,5 @@
 
+default['build-essential']['compile_time'] = true
 
 default['riemann']['server']['version'] = '0.2.6'
 default['riemann']['server']['user'] = 'riemann'

@@ -7,6 +7,7 @@ version           "1.1.0"
 
 supports "Centos", ">= 6.4"
 
+depends "build-essential"
 depends "java"
 depends "yum-epel"
 
